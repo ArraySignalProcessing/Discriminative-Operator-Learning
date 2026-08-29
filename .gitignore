@@ -1,0 +1,40 @@
+# Python caches and environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.conda/
+
+# Generated datasets and numerical results
+data/
+*.h5
+*.hdf5
+*.mat
+*.npy
+*.npz
+
+# Generated model checkpoints
+*.pth
+*.pt
+*.ckpt
+
+# Generated figures and logs
+figure/
+figures/
+Plot_result/
+*.fig
+*.log
+training_loss.png
+training_accuracy.png
+deep_root_music_training_loss.png
+
+# MATLAB and editor artifacts
+*.asv
+slprj/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Optional third-party distributions
+cvx/
