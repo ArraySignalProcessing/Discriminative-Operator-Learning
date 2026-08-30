@@ -1,9 +1,9 @@
-﻿"""
-test_cnn_1C.py
-Topic 1C: RMSE and PoR versus angular separation.
-Reads ../data/C1/C1_CloseSource.h5 and writes ../data/C1/C1_CNN.h5.
 """
-# Unified MATLAB benchmark uses SNR=0 dB and T=200 for Topic 1C.
+testC2_coherent_sources.py
+C2: coherent-source rho scan, RMSE and PoR vs rho.
+Reads ../data/C2/C2_CoherentSources.h5 and writes
+../data/C2/C2_CNN.h5.
+"""
 import h5py, numpy as np, torch, re, itertools
 import matplotlib.pyplot as plt
 import os
@@ -14,17 +14,20 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--model', default='cnn_model.pth', help='Path to PyTorch model .pth')
 args = parser.parse_args()
 MODEL_PATH = args.model
-DATA_PATH = '../data/C1/C1_CloseSource.h5'
-OUT_PATH  = '../data/C1/C1_CNN.h5'
+DATA_PATH = '../data/C2/C2_CoherentSources.h5'
+OUT_PATH  = '../data/C2/C2_CNN.h5'
 K = 2
-THRESHOLD = 1.0 # degrees, for PoR calculation
+THRESHOLD = 1.0
 ANGLE_GRID = np.arange(-60, 60.5, 0.5)
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def parse_sep_group(group_name: str) -> float:
-    """Parse angular separation from a group name like Sep_20deg."""
-    match = re.search(r'Sep_(\d+)deg', group_name)
-    return float(match.group(1)) if match else float('nan')
+def parse_rho_group(group_name: str) -> float:
+    """Parse HDF5 group names like Rho_0p10 or Rho_1p00."""
+    match = re.search(r'Rho_([0-9]+p[0-9]+|1p00)', group_name)
+    if not match:
+        return float('nan')
+    return float(match.group(1).replace('p', '.'))
+
 
 def normalize_covariance_batch(r_sam: np.ndarray) -> np.ndarray:
     """Return covariance samples in paper layout: (N, 3, M, M)."""
@@ -90,41 +93,23 @@ def best_permutation_diff(est: np.ndarray, gt: np.ndarray) -> np.ndarray:
     return best_est, best_diff
 
 
-def show_bias_plot(sep: int, gt: np.ndarray, est: np.ndarray) -> None:
-    """Save predicted-vs-actual deviation plot for one separation group to file."""
+def plot_all_predictions(rho_list, gt_list, est_list) -> None:
+    """Save all rho values in one figure with a 3-column layout."""
     plot_dir = os.path.join(os.path.dirname(__file__), 'Plot_result')
     os.makedirs(plot_dir, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(10, 4.5), constrained_layout=True)
-    sample_index = np.arange(1, gt.shape[0] + 1)
-    ax.hlines(gt[0, 0], sample_index[0], sample_index[-1], colors='tab:blue', linestyles='--', linewidth=1.5, label='GT src 1')
-    ax.hlines(gt[0, 1], sample_index[0], sample_index[-1], colors='tab:orange', linestyles='--', linewidth=1.5, label='GT src 2')
-    ax.scatter(sample_index, est[:, 0], s=18, alpha=0.8, color='tab:blue', marker='o', label='Pred src 1')
-    ax.scatter(sample_index, est[:, 1], s=18, alpha=0.8, color='tab:orange', marker='o', label='Pred src 2')
-    ax.set_title(f'Angles by sample (sep={sep:g} deg)')
-    ax.set_xlabel('Sample index')
-    ax.set_ylabel('Angle (deg)')
-    ax.grid(True, alpha=0.25)
-    ax.legend(loc='best', fontsize=8)
-    fig.suptitle(f'Topic 1C bias check, sep={sep:g} deg', fontsize=12)
-    plt.close(fig)
-
-def plot_all_predictions(sep_list, gt_list, est_list) -> None:
-    """Save all separations in one figure with 3-column layout."""
-    plot_dir = os.path.join(os.path.dirname(__file__), 'Plot_result')
-    os.makedirs(plot_dir, exist_ok=True)
-    n = len(sep_list)
+    n = len(rho_list)
     ncols = 3
     nrows = (n + ncols - 1) // ncols
     fig, axes = plt.subplots(nrows, ncols, figsize=(15, 4*nrows))
     axes = axes.flatten() if n > 1 else [axes]
-    for i, (sep, gt, est) in enumerate(zip(sep_list, gt_list, est_list)):
+    for i, (rho, gt, est) in enumerate(zip(rho_list, gt_list, est_list)):
         ax = axes[i]
         sample_idx = np.arange(1, gt.shape[0] + 1)
         ax.hlines(gt[0, 0], sample_idx[0], sample_idx[-1], colors='blue', linestyles='--', linewidth=2, label='GT src 1')
         ax.hlines(gt[0, 1], sample_idx[0], sample_idx[-1], colors='orange', linestyles='--', linewidth=2, label='GT src 2')
         ax.scatter(sample_idx, est[:, 0], s=20, alpha=0.7, color='blue', marker='o')
         ax.scatter(sample_idx, est[:, 1], s=20, alpha=0.7, color='orange', marker='o')
-        ax.set_title(f'sep={sep:.0f} deg')
+        ax.set_title(f'rho={rho:.2f}')
         ax.set_ylabel('Angle (deg)')
         ax.grid(True, alpha=0.2)
         if i == 0:
@@ -133,7 +118,7 @@ def plot_all_predictions(sep_list, gt_list, est_list) -> None:
         axes[j].set_visible(False)
     fig.text(0.5, 0.02, 'Sample', ha='center')
     plt.tight_layout()
-    save_path = os.path.join(plot_dir, 'C1_prediction.png')
+    save_path = os.path.join(plot_dir, 'C2_prediction.png')
     fig.savefig(save_path, dpi=150, bbox_inches='tight')
     print(f'Plot saved to {save_path}')
     plt.close(fig)
@@ -176,15 +161,15 @@ model.eval()
 print(f'Opening {DATA_PATH}')
 with h5py.File(DATA_PATH, 'r') as f:
     groups = [g for g in f.keys() if not g.startswith('.')]
-    groups = sorted(groups, key=parse_sep_group)
+    groups = sorted(groups, key=parse_rho_group)
     print(f'Found {len(groups)} groups: {groups}\n')
-    sep_vals, rmse_vals, por_vals = [], [], []
-    plot_seps = []
+    rho_vals, rmse_vals, por_vals = [], [], []
+    plot_rhos = []
     plot_gts = []
     plot_ests = []
 
     for grp in groups:
-        sep = parse_sep_group(grp)
+        rho = parse_rho_group(grp)
         R_sam = np.array(f[grp]['sam'])
         R_batch = normalize_covariance_batch(R_sam)
         R_tensor = torch.from_numpy(R_batch).float().to(DEVICE)
@@ -198,21 +183,20 @@ with h5py.File(DATA_PATH, 'r') as f:
         est, diff = best_permutation_diff(est, gt)
         bias = diff
         print(f'  GT:{gt[0]} Pred:{est[0]} Bias:{bias[0]}')
-        plot_seps.append(sep)
+        plot_rhos.append(rho)
         plot_gts.append(gt)
         plot_ests.append(est)
-
         rmse = np.sqrt(np.mean(np.sum(diff**2, axis=1) / K))
         por = np.mean(np.max(np.abs(diff), axis=1) <= THRESHOLD) * 100
-        sep_vals.append(sep)
+        rho_vals.append(rho)
         rmse_vals.append(rmse)
         por_vals.append(por)
-        print(f'sep={sep:4.0f} deg: RMSE={rmse:.3f} deg, PoR={por:.1f}%')
+        print(f'rho={rho:5.2f}: RMSE={rmse:.3f} deg, PoR={por:.1f}%')
 
-order = np.argsort(sep_vals)
-plot_all_predictions(plot_seps, plot_gts, plot_ests)
+    order = np.argsort(rho_vals)
+    plot_all_predictions(plot_rhos, plot_gts, plot_ests)
 with h5py.File(OUT_PATH, 'w') as fout:
-    fout.create_dataset('delta_theta_vec', data=np.array(sep_vals)[order])
+    fout.create_dataset('rho_vec', data=np.array(rho_vals)[order])
     fout.create_dataset('CNN_RMSE', data=np.array(rmse_vals)[order])
     fout.create_dataset('CNN_PoR', data=np.array(por_vals)[order] / 100.0)  # Convert percentage to decimal
 print(f'Results saved to {OUT_PATH}')

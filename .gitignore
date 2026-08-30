@@ -19,7 +19,6 @@ data/
 *.ckpt
 
 # Generated figures and logs
-figure/
 figures/
 Plot_result/
 *.fig

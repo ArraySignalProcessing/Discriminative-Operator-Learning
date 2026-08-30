@@ -1,10 +1,10 @@
 function export_ieee_figure(fig, base_name)
 % export_ieee_figure Export a MATLAB figure for IEEE-style paper review.
 %
-% Outputs are written to <repo>/figure/<base_name>.pdf and .png.
+% Outputs are written to <repo>/figures/<base_name>.pdf and .png.
 
 repo_dir = fileparts(fileparts(mfilename('fullpath')));
-out_dir = fullfile(repo_dir, 'figure');
+out_dir = fullfile(repo_dir, 'figures');
 if ~exist(out_dir, 'dir')
     mkdir(out_dir);
 end

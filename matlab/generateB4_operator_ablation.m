@@ -4,7 +4,7 @@
 % Data flow:
 %   MATLAB: generate test samples and EVD Pn -> data/B4/B4_OperatorAblation_QPn_K*.h5
 %   Python: export ablation Q matrices    -> data/B4/B4_Ablation_Q_K*.h5
-%   MATLAB: plot Fig. B4/Figure 6         -> matlab/Plot_result/B4_operator_ablation.png
+%   MATLAB: plot the B4 paper figure      -> figures/plotB4_operator_ablation_K2.*
 
 clear; close all;
 tic;

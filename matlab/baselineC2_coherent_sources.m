@@ -1,5 +1,5 @@
 % baselineC2_coherent_sources.m
-% Topic 1D：相干源 rho 扫描下的传统基线 RMSE 与 PoR 计算。
+% C2：相干源 rho 扫描下的传统基线 RMSE 与 PoR 计算。
 % 包含 MUSIC、Root-MUSIC、标准 ESPRIT、TR-MUSIC、SS-MUSIC、SS-ESPRIT，以及可选的 l1-SVD、UnESPRIT。
 
 clear all; close all;
@@ -187,21 +187,21 @@ end
 
 save(fullfile(data_dir, 'C2_Baselines.mat'), 'rho_vec', 'SNR_dB', 'RMSE', 'PoR');
 
-fprintf('\n=== Topic 1D RMSE 表格 (SNR=%d dB) ===\n', SNR_dB);
+fprintf('\n=== C2 RMSE 表格 (SNR=%d dB) ===\n', SNR_dB);
 Tab_RMSE = table(rho_vec(:), ...
     RMSE.MUSIC(:), RMSE.RootMUSIC(:), RMSE.ESPRIT(:), ...
     RMSE.TRMUSIC(:), RMSE.SSMUSIC(:), RMSE.SSESPRIT(:), RMSE.l1SVD(:), RMSE.UnESPRIT(:), ...
     'VariableNames', {'rho', 'MUSIC', 'Root-MUSIC', 'ESPRIT', 'TR-MUSIC', 'SS-MUSIC', 'SS-ESPRIT', 'l1-SVD', 'UnESPRIT'});
 disp(Tab_RMSE);
 
-fprintf('\n=== Topic 1D PoR 表格 (SNR=%d dB) ===\n', SNR_dB);
+fprintf('\n=== C2 PoR 表格 (SNR=%d dB) ===\n', SNR_dB);
 Tab_PoR = table(rho_vec(:), ...
     PoR.MUSIC(:) * 100, PoR.RootMUSIC(:) * 100, PoR.ESPRIT(:) * 100, ...
     PoR.TRMUSIC(:) * 100, PoR.SSMUSIC(:) * 100, PoR.SSESPRIT(:) * 100, PoR.l1SVD(:) * 100, PoR.UnESPRIT(:) * 100, ...
     'VariableNames', {'rho', 'MUSIC_%', 'Root-MUSIC_%', 'ESPRIT_%', 'TR-MUSIC_%', 'SS-MUSIC_%', 'SS-ESPRIT_%', 'l1-SVD_%', 'UnESPRIT_%'});
 disp(Tab_PoR);
 
-fprintf('Topic 1D 所有基线 RMSE 和 PoR 已保存。\n');
+fprintf('C2 所有基线 RMSE 和 PoR 已保存。\n');
 toc;
 
 % ================= 辅助函数 =================

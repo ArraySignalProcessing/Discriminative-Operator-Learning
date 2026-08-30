@@ -9,9 +9,6 @@ clear all; close all;
 % ================= 路径 =================
 data_dir = fullfile(fileparts(fileparts(mfilename('fullpath'))), 'data', 'C2');
 
-% ================= x 轴设置 =================
-fixed_snr_db = -5;
-
 % ================= 显示开关 =================
 show_MUSIC       = true;
 show_RootMUSIC   = false;
@@ -39,6 +36,11 @@ if isempty(baseline_file)
     error('找不到基线结果: %s', baseline_candidates{1});
 end
 load(baseline_file);
+
+if ~exist('SNR_dB', 'var')
+    error('基线结果中缺少 SNR_dB，无法核验 C2 绘图参数。');
+end
+fixed_snr_db = SNR_dB;
 
 if exist('rho_vec', 'var')
     x_vec = rho_vec;
@@ -179,12 +181,12 @@ end
 % 输出表格
 Tab_RMSE = array2table([x_vec(:), methodRMSE], ...
     'VariableNames', [x_name, methodNames]);
-fprintf('=== Topic 1D RMSE 表格 (SNR=%d dB) ===\n', fixed_snr_db);
+fprintf('=== C2 RMSE 表格 (SNR=%d dB) ===\n', fixed_snr_db);
 disp(Tab_RMSE);
 if ~isempty(methodPOR) && any(~all(isnan(methodPOR)))
     Tab_PoR = array2table([x_vec(:), methodPOR], ...
         'VariableNames', [x_name, methodNames]);
-    fprintf('=== Topic 1D PoR (%%) 表格 (SNR=%d dB) ===\n', fixed_snr_db);
+    fprintf('=== C2 PoR (%%) 表格 (SNR=%d dB) ===\n', fixed_snr_db);
     disp(Tab_PoR);
 end
 

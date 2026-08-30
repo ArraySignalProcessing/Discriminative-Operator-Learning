@@ -1,5 +1,5 @@
 % baselineC1_close_source.m
-% 论文实验 Topic 1C —— 传统基线 RMSE + PoR 计算（角度间隔扫描）
+% 论文实验 C1 —— 传统基线 RMSE + PoR 计算（角度间隔扫描）
 % 包括 MUSIC, Root-MUSIC, ESPRIT + l1-SVD, UnESPRIT
 % 所有可调参数集中于脚本开头，自动输出 RMSE/PoR 表格。
 % 作者: D
@@ -16,7 +16,7 @@ if ~exist(data_dir, 'dir')
 end
 
 % ================= 可调参数（需与 GENER 脚本一致） =================
-delta_theta_vec = [2:1:5,6:3:15];              % Scenario 1C angular separations
+delta_theta_vec = [2:1:5,6:3:15];              % C1 angular separations
 K          = 2;                        % 信源数
 M          = 10;                       % 阵元数
 T          = 200;                       % Must match generateC1_close_source_data.m
@@ -142,7 +142,7 @@ end
 save(fullfile(data_dir, 'C1_Baselines.mat'), 'delta_theta_vec', 'RMSE', 'PoR');
 
 % 输出 RMSE 表格
-fprintf('\n=== Topic 1C RMSE 表格 ===\n');
+fprintf('\n=== C1 RMSE 表格 ===\n');
 Tab_RMSE = table(delta_theta_vec(:), ...
     RMSE.MUSIC(:), RMSE.RootMUSIC(:), RMSE.ESPRIT(:), ...
     RMSE.l1SVD(:), RMSE.UnESPRIT(:), ...
@@ -150,7 +150,7 @@ Tab_RMSE = table(delta_theta_vec(:), ...
 disp(Tab_RMSE);
 
 % 输出 PoR 表格
-fprintf('\n=== Topic 1C PoR 表格 ===\n');
+fprintf('\n=== C1 PoR 表格 ===\n');
 Tab_PoR = table(delta_theta_vec(:), ...
     PoR.MUSIC(:)*100, PoR.RootMUSIC(:)*100, PoR.ESPRIT(:)*100, ...
     PoR.l1SVD(:)*100, PoR.UnESPRIT(:)*100, ...

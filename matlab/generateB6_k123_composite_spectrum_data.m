@@ -5,7 +5,7 @@
 % Data flow:
 %   MATLAB: generate test samples and EVD Pn -> data/B6/B6_K123_CompositeSpectrum_QPn_K*.h5
 %   Python: export learned Q from a K=3 model -> data/B6/B6_K123_CompositeSpectrum_Q_K*.h5
-%   MATLAB: plot K=1/2/3 spectra -> matlab/Plot_result/plotB6_k123_composite_spectrum_K*.*
+%   MATLAB: plot K=1/2/3 spectra -> figures/plotB6_k123_composite_spectrum_K*.*
 
 clear; close all;
 tic;

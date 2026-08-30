@@ -1,6 +1,6 @@
-﻿"""test_subspace_1C.py
-Topic 1C - RMSE & PoR vs angular separation.
-Read ../data/C1/C1_CloseSource.h5 and write ../data/C1/C1_SubspaceNet.h5.
+﻿"""testC2_coherent_sources.py
+C2 - coherent-source RMSE & PoR vs rho.
+Read ../data/C2/C2_CoherentSources.h5 and write ../data/C2/C2_SubspaceNet.h5.
 """
 
 import argparse
@@ -24,16 +24,16 @@ parser.add_argument('--batch_size', type=int, default=64)
 args = parser.parse_args()
 
 MODEL_PATH = args.model
-DATA_PATH = '../data/C1/C1_CloseSource.h5'
-OUT_PATH = '../data/C1/C1_SubspaceNet.h5'
+DATA_PATH = '../data/C2/C2_CoherentSources.h5'
+OUT_PATH = '../data/C2/C2_SubspaceNet.h5'
 K = 2
 THRESHOLD = 1.0 # degrees, for PoR calculation
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def parse_group(group_name: str) -> float:
-    match = re.search(r'Sep_(\d+)deg', group_name)
-    return float(match.group(1)) if match else float('nan')
+    match = re.search(r'Rho_([0-9]+p[0-9]+|1p00)', group_name)
+    return float(match.group(1).replace('p', '.')) if match else float('nan')
 
 
 def normalize_angle_batch(angles: np.ndarray, k: int = K) -> np.ndarray:
@@ -97,7 +97,7 @@ def plot_all_predictions(x_list, gt_list, est_list) -> None:
         ax.hlines(gt[0, 1], sample_idx[0], sample_idx[-1], colors='orange', linestyles='--', linewidth=2, label='GT src 2')
         ax.scatter(sample_idx, est[:, 0], s=20, alpha=0.7, color='blue', marker='o')
         ax.scatter(sample_idx, est[:, 1], s=20, alpha=0.7, color='orange', marker='o')
-        ax.set_title(f'Delta={x_value:g} deg')
+        ax.set_title(f'rho={x_value:.2f}')
         ax.set_ylabel('Angle (deg)')
         ax.grid(True, alpha=0.2)
         if i == 0:
@@ -106,7 +106,7 @@ def plot_all_predictions(x_list, gt_list, est_list) -> None:
         axes[j].set_visible(False)
     fig.text(0.5, 0.02, 'Sample', ha='center')
     plt.tight_layout()
-    save_path = os.path.join(plot_dir, 'C1_prediction.png')
+    save_path = os.path.join(plot_dir, 'C2_prediction.png')
     fig.savefig(save_path, dpi=150, bbox_inches='tight')
     print(f'Plot saved to {save_path}')
     plt.close(fig)
@@ -158,12 +158,12 @@ with h5py.File(DATA_PATH, 'r') as f:
         plot_x.append(x_value)
         plot_gts.append(gt)
         plot_ests.append(est)
-        print(f'Delta={x_value:g} deg: RMSE={rmse:.3f} deg, PoR={por:.1f}%')
+        print(f'rho={x_value:.2f}: RMSE={rmse:.3f} deg, PoR={por:.1f}%')
 
 order = np.argsort(x_vals)
 plot_all_predictions(plot_x, plot_gts, plot_ests)
 with h5py.File(OUT_PATH, 'w') as fout:
     fout.create_dataset('SubspaceNet_RMSE', data=np.array(rmse_vals, dtype=np.float32)[order])
     fout.create_dataset('SubspaceNet_PoR', data=np.array(por_vals, dtype=np.float32)[order] / 100.0)
-    fout.create_dataset('delta_theta_vec', data=np.array(x_vals, dtype=np.float32)[order])
+    fout.create_dataset('rho_vec', data=np.array(x_vals, dtype=np.float32)[order])
 print(f'Results saved to {OUT_PATH}')

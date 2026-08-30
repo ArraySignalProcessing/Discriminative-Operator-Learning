@@ -13,7 +13,7 @@ authors:
     given-names: Xiaojun
   - family-names: Fang
     given-names: Guangyou
-repository-code: "https://github.com/ArraySignalProcessing/DMN-MUSIC-DOA"
+repository-code: "https://github.com/ArraySignalProcessing/Discriminative-Operator-Learning"
 license: MIT
 keywords:
   - direction-of-arrival estimation

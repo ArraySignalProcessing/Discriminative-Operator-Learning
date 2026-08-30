@@ -1,8 +1,8 @@
 % generateC2_coherent_sources_data.m
 % C2 coherent-source data generator.
-% Scenario 1D: coherent-source robustness with a moderately close off-grid pair.
-% Fixed setting: DOA=[-5.2, 13.8] deg, SNR=-5 dB, T=100, M=10.
-% 论文实验 Topic 1D —— 相干源（相关系数 ρ 扫描），固定 SNR
+% C2: coherent-source robustness with a moderately close off-grid pair.
+% Fixed setting: DOA=[-5.2, 13.8] deg, SNR=0 dB, T=200, M=10.
+% 论文实验 C2 —— 相干源（相关系数 ρ 扫描），固定 SNR
 % Fixed two-source DOA with coherence-rho scan.
 % 生成数据：2通道样本/理论协方差（实部+虚部）。
 % 可选择同时运行 l1-SVD 和 UnESPRIT 算法。

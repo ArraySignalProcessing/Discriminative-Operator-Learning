@@ -1,6 +1,6 @@
 % generateC1_close_source_data.m
 % C1 close-source data generator.
-% 论文实验 Topic 1C —— 角度间隔扫描（RMSE vs Δθ）
+% 论文实验 C1 —— 角度间隔扫描（RMSE vs Δθ）
 % 生成数据：2通道样本/理论协方差（实部+虚部）
 % 可选择同时运行 l1-SVD 和 UnESPRIT
 % 所有可调参数集中于脚本开头。

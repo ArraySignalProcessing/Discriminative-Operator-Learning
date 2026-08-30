@@ -1,4 +1,4 @@
-name: dmn-music-doa
+name: discriminative-operator-learning
 channels:
   - conda-forge
 dependencies:

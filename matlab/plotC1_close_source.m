@@ -1,5 +1,5 @@
 % plotC1_close_source.m
-% 绘制 Topic 1C：RMSE vs Δθ + PoR vs Δθ（双面板）
+% 绘制 C1：RMSE vs Δθ + PoR vs Δθ（双面板）
 % 自动检测所有可用结果文件并绘制，输出统一表格。
 % 作者: D
 % 日期: 2026-05-09 (revised 2026-05-09)
@@ -133,12 +133,12 @@ end
 % 输出表格
 Tab_RMSE = array2table([delta_theta_vec(:), methodRMSE], ...
     'VariableNames', ['DeltaTheta', methodNames]);
-fprintf('=== Topic 1C RMSE 表格 ===\n');
+fprintf('=== C1 RMSE 表格 ===\n');
 disp(Tab_RMSE);
 if ~isempty(methodPOR) && any(~all(isnan(methodPOR)))
     Tab_PoR = array2table([delta_theta_vec(:), methodPOR], ...
         'VariableNames', ['DeltaTheta', methodNames]);
-    fprintf('=== Topic 1C PoR (%% ) 表格 ===\n');
+    fprintf('=== C1 PoR (%% ) 表格 ===\n');
     disp(Tab_PoR);
 end
 
