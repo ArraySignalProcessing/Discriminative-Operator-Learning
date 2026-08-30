@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying manuscript and this repository."
+type: software
+title: "Task-Driven Discriminative Operator Learning for MUSIC-Based DOA Estimation"
+authors:
+  - family-names: Duan
+    given-names: Kaixiang
+  - family-names: Zhang
+    given-names: Qunying
+  - family-names: Lu
+    given-names: Wei
+  - family-names: Liu
+    given-names: Xiaojun
+  - family-names: Fang
+    given-names: Guangyou
+repository-code: "https://github.com/ArraySignalProcessing/DMN-MUSIC-DOA"
+license: MIT
+keywords:
+  - direction-of-arrival estimation
+  - MUSIC
+  - array signal processing
+  - deep learning
+  - discrimination operator

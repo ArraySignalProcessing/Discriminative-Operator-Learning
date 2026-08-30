@@ -50,7 +50,7 @@ Also record:
 - RAM;
 - CUDA version;
 - cuDNN version;
-- training time for DMN, MLC, and SubspaceNet;
+- training time for the proposed method, MLC, and SubspaceNet;
 - approximate runtime for B1-B4 and C1-C2;
 - peak disk usage.
 

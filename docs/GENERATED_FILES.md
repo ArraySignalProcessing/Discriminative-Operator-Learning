@@ -7,7 +7,7 @@ Generated artifacts are not stored in the source repository. This document descr
 | Producer | Primary output | Consumer |
 |---|---|---|
 | `python_Ours/Ours_Generate_allpairs.py` | `python_Ours/Ours_train.h5` | `python_Ours/Ours_train.py` |
-| `python_Ours/Ours_train.py` | `python_Ours/ours_model.pth` | B3, B4, C1-C5 DMN tests |
+| `python_Ours/Ours_train.py` | `python_Ours/ours_model.pth` | B3, B4, C1-C5 proposed-method tests |
 | `python_CNN/CNN_Generate_allpairs.py` | `python_CNN/CNN_train.h5` | `python_CNN/CNN_train.py` |
 | `python_CNN/CNN_train.py` | `python_CNN/cnn_model.pth` | C1-C5 MLC tests |
 | `python_SubspaceNet/SubspaceNet_Generate_train.py` | `python_SubspaceNet/Subspace_train_rho.h5` | `python_SubspaceNet/train_SubspaceNet.py` |

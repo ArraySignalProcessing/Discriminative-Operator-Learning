@@ -9,7 +9,7 @@ This inventory classifies the retained source code without changing source filen
 - **SHARED**: common training, simulation, metric, plotting, or utility code used across experiments.
 - **OPTIONAL**: code used only when an optional baseline or third-party dependency is enabled.
 
-## Proposed DMN (`python_Ours`)
+## Proposed method (`python_Ours`)
 
 ### Core and shared
 
@@ -22,8 +22,8 @@ This inventory classifies the retained source code without changing source filen
 | `expB3_operator_response_export_Q.py` | CORE | Exports learned operators for B3. |
 | `trainB4_operator_ablation.py` | CORE | Trains B4 projector-fitting and null-only ablations. |
 | `expB4_operator_ablation_export_Q.py` | CORE | Exports the B4 ablation operators. |
-| `testC1_close_source.py` | CORE | Grid-backend DMN evaluation for C1. |
-| `testC2_coherent_sources.py` | CORE | Grid-backend DMN evaluation for C2. |
+| `testC1_close_source.py` | CORE | Grid-backend proposed-method evaluation for C1. |
+| `testC2_coherent_sources.py` | CORE | Grid-backend proposed-method evaluation for C2. |
 
 ### Extended
 
@@ -37,11 +37,11 @@ This inventory classifies the retained source code without changing source filen
 | `expB6_k123_composite_spectrum_export_Q.py` | EXTENDED | B6 learned-operator export for K=1,2,3. |
 | `testC1_close_source_root.py` | EXTENDED | Root-Ours evaluation for C1. |
 | `testC2_coherent_sources_root.py` | EXTENDED | Root-Ours evaluation for C2. |
-| `testC3_array_mismatch.py` | EXTENDED | Grid-backend DMN evaluation for C3. |
+| `testC3_array_mismatch.py` | EXTENDED | Grid-backend proposed-method evaluation for C3. |
 | `testC3_array_mismatch_root.py` | EXTENDED | Root-Ours evaluation for C3. |
-| `testC4_snr_scan.py` | EXTENDED | Grid-backend DMN evaluation for C4. |
+| `testC4_snr_scan.py` | EXTENDED | Grid-backend proposed-method evaluation for C4. |
 | `testC4_snr_scan_root.py` | EXTENDED | Root-Ours evaluation for C4. |
-| `testC5_snapshot_scan.py` | EXTENDED | Grid-backend DMN evaluation for C5. |
+| `testC5_snapshot_scan.py` | EXTENDED | Grid-backend proposed-method evaluation for C5. |
 | `testC5_snapshot_scan_root.py` | EXTENDED | Root-Ours evaluation for C5. |
 
 ## MLC (`python_CNN`)
