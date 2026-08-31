@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the accompanying manuscript and this repository."
 type: software
-title: "Task-Driven Discriminative Operator Learning for MUSIC-Based DOA Estimation"
+title: "Task-Driven Learning of DOA-Discrimination Operators for MUSIC-Type DOA Estimation"
 authors:
   - family-names: Duan
     given-names: Kaixiang
